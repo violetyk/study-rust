@@ -51,6 +51,8 @@ println!("{spaces}");        // 3
 
 これは `mut` とは違う。`mut` は同じ変数の値を変える、シャドーイングは新しい変数を束縛する。スコープを抜ければ元に戻る。
 
+詳しく: [変数・値・束縛、mut とシャドーイング](explanations/binding-and-shadowing.md)
+
 ## 定数
 
 ```rust
@@ -82,6 +84,16 @@ let d = 0b1010;                   // 2進
 let e: f64 = 2.5;
 ```
 
+### isize と usize
+
+固定幅の `i8 / i16 / i32 / ...` と違って、`isize / usize` は実行環境のポインタ幅に合わせて変わる（64bit システムなら 64bit、32bit システムなら 32bit）。
+
+配列の長さや添字は「メモリ上のオフセット」なので、メモリアドレスと同じ幅じゃないと表現しきれない。32bit システムではアドレスが 32bit までなので、長さや添字もそれに合わせる必要がある。だから Rust は `Vec::len()` の戻り値や `vec[i]` の添字を `usize` で固定している。
+
+現代の Mac / Linux はほぼ 64bit なので、実質 `usize == u64` のサイズだと思って良い（Apple Silicon、Intel Mac (x86_64)、Linux x86_64 すべて 64bit）。
+
+C / C++ の `size_t` / `ssize_t`、Go の `int` / `uint` と同等の概念。
+
 ### 整数オーバーフロー
 
 ⚠️ debug ビルドではパニック、release ビルドではラップする（モジュロ演算）。地味な落とし穴。
@@ -99,6 +111,8 @@ let y = x + 1;   // debug: panic / release: 0
 - `overflowing_add` → `(T, bool)` を返す
 
 金額計算など重要なロジックは必ず `checked_*` を使う。
+
+詳しく: [Option<T>](explanations/option.md)
 
 ## タプルと配列
 
@@ -132,6 +146,8 @@ let s4: &str = &s2;                  // String → &str への参照取得（よ
 
 PHP/Go でいう「文字列」感覚で `&str` だけ使うとすぐ詰まる。「持ち主は誰か」を意識し始めるのが Rust への第一歩。
 
+詳しく: [&str と String の違い](explanations/str-vs-string.md) ｜ [スタックとヒープ](explanations/stack-and-heap.md) ｜ [スライスとは](explanations/slice.md)
+
 ## 関数
 
 ```rust
@@ -143,6 +159,8 @@ fn add(x: i32, y: i32) -> i32 {
 - 仮引数の型は必須
 - 戻り値の型は `->` で書く。`()` 戻りは省略可
 - 関数の最後の式が戻り値（`return` も書けるが省略がイディオム）
+
+詳しく: [関数の戻り値の型はどこから来るか](explanations/function-return-type.md) ｜ [&'static str と文字列リテラルの正体](explanations/static-str.md)
 
 ```rust
 fn classify(n: i32) -> &'static str {
@@ -231,6 +249,8 @@ let n: i32 = "42".parse().unwrap();   // 失敗するかも → Result が返る
 
 型推論が効く場面では型注釈を省けるが、`parse` のように戻り型が決まらないものは注釈が必要。
 
+詳しく: [parse / Result / unwrap](explanations/parse-and-result.md)
+
 ## 演習
 
 📝 **演習 1-1**: 次のコードを書いて、なぜコンパイルエラーになるかを読む。直してから実行する。
@@ -255,12 +275,12 @@ let n: i32 = s.parse().unwrap_or(0);
 
 ## チェックリスト
 
-- [ ] `let` と `let mut` の違いが言える
-- [ ] シャドーイングと `mut` の違いが言える
-- [ ] `if` が式である意味を体感した
-- [ ] `&str` と `String` の違いを（とりあえず）言える
-- [ ] 整数オーバーフローの挙動と対処法を知っている
-- [ ] `dbg!` を実際に使った
+- [x] `let` と `let mut` の違いが言える
+- [x] シャドーイングと `mut` の違いが言える
+- [x] `if` が式である意味を体感した
+- [x] `&str` と `String` の違いを（とりあえず）言える
+- [x] 整数オーバーフローの挙動と対処法を知っている
+- [x] `dbg!` を実際に使った
 
 ## 落とし穴
 
