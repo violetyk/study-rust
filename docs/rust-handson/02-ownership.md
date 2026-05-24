@@ -79,7 +79,7 @@ flowchart LR
         h["'hello'"]
     end
     s2 --> h
-    s1 -.x.-> h
+    s1 -.-x h
 ```
 
 詳しく: [所有のラインは 1 本だけ](explanations/move-and-ownership-line.md)
