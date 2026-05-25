@@ -240,6 +240,8 @@ r2.push('!');
 
 エラーが出たときは「いつまで参照が生きている扱いになっているか」を読む。
 
+詳しく: [Non-Lexical Lifetime (NLL)](explanations/non-lexical-lifetime.md)
+
 ## ダングリング参照は作れない
 
 ```rust
@@ -249,7 +251,9 @@ fn dangle() -> &String {     // ❌
 }   // s は drop されるので、参照は無効
 ```
 
-C なら未定義動作で死ぬが、Rust はコンパイルが通らない。
+C なら未定義動作 (UB) で死ぬが、Rust はコンパイルが通らない。
+
+詳しく: [ダングリング参照とライフタイム](explanations/dangling-and-lifetime.md) ｜ [未定義動作 (UB) と Rust の安全性保証](explanations/undefined-behavior.md)
 
 ## クローンが必要なケース
 
@@ -262,6 +266,8 @@ println!("{s1} {s2}");
 ```
 
 コストが高い操作なので、Rust では「無意識に」clone は呼ばない。Go の値型コピーとは思想が違う。
+
+詳しく: [Copy と Clone](explanations/copy-and-clone.md)
 
 ## スライス: `&str` と `&[T]`
 
@@ -278,6 +284,8 @@ let slice: &[i32] = &v[1..3];   // [2, 3]
 
 ⚠️ 文字列のスライスはバイト境界を意識すること（マルチバイト文字を切ると panic）。
 
+詳しく: [スライス](explanations/slice.md) ｜ [&str と String](explanations/str-vs-string.md)
+
 ## 関数引数: `&str` を取るのが定石
 
 ```rust
@@ -293,6 +301,8 @@ fn main() {
 ```
 
 「文字列を読みたいだけの関数」は `&String` ではなく `&str` を取る、が定石。汎用性が上がる。
+
+詳しく: [文字列引数は `&str` を取るのが定石](explanations/str-arg-idiom.md)
 
 ## 演習
 
@@ -327,7 +337,7 @@ fn main() {
 
 ## チェックリスト
 
-- [ ] move と copy の違いが言える
+- [x] move と copy の違いが言える
 - [ ] `&T` と `&mut T` の同時所持ルールが言える
 - [ ] NLL のおかげで「参照を使い終われば次の借用ができる」を体感した
 - [ ] `String` を引数に取る代わりに `&str` を使う理由が言える
