@@ -2,6 +2,7 @@ fn main() {
     exercise_2_1_move();
     exercise_2_1_borrow();
     exercise_2_1_clone();
+    exercise_2_2();
 }
 
 // 演習 2-1 まとめ: 3 パターンの比較
@@ -62,4 +63,17 @@ fn exercise_2_1_clone() {
 
 fn compute_len_clone(s: String) -> usize {
     return s.len();
+}
+
+fn exercise_2_2() {
+    let v = vec![1, 2, 3];
+    let (total, max) = total_and_max(&v);
+    println!("{total}, {max}");
+    println!("{:?}", v); // vがまだ使える
+}
+
+// fn total_and_max(v: Vec<i32>) -> (i32, i32) {
+fn total_and_max(v: &[i32]) -> (i32, i32) {
+    // Option<&i32> の中身は &i32（参照）なので、* で参照外しするか、.copied() で値にコピーするかが必要:
+    (v.iter().sum(), *v.iter().max().unwrap())
 }
